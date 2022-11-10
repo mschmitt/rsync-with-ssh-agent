@@ -3,6 +3,10 @@ inputs:
     description: 'rsync local source path'
     required: false
     default: '.'
+  RSYNC_OPTIONS:
+    description: 'additional rsync options'
+    required: false
+    default: '--dry-run'
 runs:
   steps:
   - name: Save SSH id to file
@@ -33,8 +37,9 @@ runs:
       ssh-add -l
   - name: Transfer files
     run: |
+      RSYNC_REMOTE_PATH=${{ secrets.RSYNC_REMOTE_PATH }}
       source ~/.ssh/agent.env
-      rsync --exclude '.*' --recursive --delete-excluded --verbose . 'remote:'
+      rsync --exclude '.*' --recursive --delete-excluded ${{ inputs.RSYNC_OPTIONS }} --verbose ${{ inputs.RSYNC_LOCAL_PATH }} 'remote:${RSYNC_REMOTE_PATH:-.}'
   - name: Kill agent and clean up
     if: success() || failure()
     run: |
