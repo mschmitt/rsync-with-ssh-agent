@@ -1,0 +1,38 @@
+runs:
+  steps:
+  - name: Save SSH id to file
+    run: install -D -m 600 <(echo "${{ secrets.SSH_KEY }}") ~/.ssh/id
+  - name: Start agent
+    run: ssh-agent -a ~/.ssh/agent.socket > ~/.ssh/agent.env
+  - name: Create ssh config
+    run: |
+      SSH_PORT=${{ secrets.SSH_PORT }}
+      cat > ~/.ssh/config <<-Here
+      StrictHostKeyChecking accept-new
+      IdentityFile ~/.ssh/id
+      IdentitiesOnly yes
+      User ${{ secrets.SSH_USER }}
+      Host remote
+      Hostname ${{ secrets.SSH_HOST }}
+      Port ${SSH_PORT:-22}
+      Here
+  - name: Debug config
+    run: cat ~/.ssh/config
+  - name: Add identity
+    run: |
+      source ~/.ssh/agent.env
+      echo "${{ secrets.SSH_PASSPHRASE }}" | ssh-add ~/.ssh/id
+  - name: List identities
+    run:  |
+      source ~/.ssh/agent.env
+      ssh-add -l
+  - name: Transfer files
+    run: |
+      source ~/.ssh/agent.env
+      rsync --exclude '.*' --recursive --delete-excluded --verbose . 'remote:'
+  - name: Kill agent and clean up
+    if: success() || failure()
+    run: |
+      source ~/.ssh/agent.env
+      ssh-agent -k
+      rm ~/.ssh/id
