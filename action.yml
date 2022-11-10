@@ -11,8 +11,10 @@ runs:
   steps:
   - name: Save SSH id to file
     run: install -D -m 600 <(echo "${{ secrets.SSH_KEY }}") ~/.ssh/id
+    shell: sh
   - name: Start agent
     run: ssh-agent -a ~/.ssh/agent.socket > ~/.ssh/agent.env
+    shell: sh
   - name: Create ssh config
     run: |
       SSH_PORT=${{ secrets.SSH_PORT }}
@@ -25,24 +27,30 @@ runs:
       Hostname ${{ secrets.SSH_HOST }}
       Port ${SSH_PORT:-22}
       Here
+    shell: sh
   - name: Debug config
     run: cat ~/.ssh/config
+    shell: sh
   - name: Add identity
     run: |
       source ~/.ssh/agent.env
       echo "${{ secrets.SSH_PASSPHRASE }}" | ssh-add ~/.ssh/id
+    shell: sh
   - name: List identities
     run:  |
       source ~/.ssh/agent.env
       ssh-add -l
+    shell: sh
   - name: Transfer files
     run: |
       RSYNC_REMOTE_PATH=${{ secrets.RSYNC_REMOTE_PATH }}
       source ~/.ssh/agent.env
       rsync --exclude '.*' --recursive --delete-excluded ${{ inputs.RSYNC_OPTIONS }} --verbose ${{ inputs.RSYNC_LOCAL_PATH }} 'remote:${RSYNC_REMOTE_PATH:-.}'
+    shell: sh
   - name: Kill agent and clean up
     if: success() || failure()
     run: |
       source ~/.ssh/agent.env
       ssh-agent -k
       rm ~/.ssh/id
+    shell: sh
