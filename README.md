@@ -8,3 +8,8 @@ All remote-related information is considered secret and needs to be configured i
 - SSH_PASSPHRASE
 - RSYNC_REMOTE_PATH
 
+Pass to the action:
+- RSYNC_LOCAL_PATH (default: .)
+- RSYNC_OPTIONS (default: --dry-run)
+
+Local dot files are always excluded from uploads. If --dry-run is removed from RSYNC_OPTIONS, --delete is implied, which may lead to data loss on the receiving end. Check Job output before removing the --dry-run option.
