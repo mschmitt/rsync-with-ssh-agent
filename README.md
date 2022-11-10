@@ -2,11 +2,11 @@
 
 All remote-related information is considered secret and needs to be configured in repository secrets:
 - SSH_HOST
-- SSH_PORT
+- SSH_PORT (default: 22)
 - SSH_USER
 - SSH_KEY
 - SSH_PASSPHRASE
-- RSYNC_REMOTE_PATH
+- RSYNC_REMOTE_PATH (default: .)
 
 Pass to the action:
 - RSYNC_LOCAL_PATH (default: .)
