@@ -1,3 +1,8 @@
+inputs:
+  RSYNC_LOCAL_PATH:
+    description: 'rsync local source path'
+    required: false
+    default: '.'
 runs:
   steps:
   - name: Save SSH id to file
