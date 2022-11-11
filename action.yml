@@ -28,7 +28,7 @@ inputs:
     required: false
     default: '.'
 defaults:
-  run:
+  runs:
     shell: sh
 runs:
   using: "composite"
