@@ -1,0 +1,29 @@
+name: rsync with SSH agent
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  upload_files:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Generate test file (plain)
+        run: mkdir 'plain'; openssl rand -hex 4 > 'plain/test.txt
+      - name: Generate test file (space)
+        run: mkdir 'spa ce'; openssl rand -hex 4 > 'spa ce/test.txt
+      - name: Generate test file (umlaut)
+        run: mkdir 'umlaüt'; openssl rand -hex 4 > 'umlaüt/test.txt
+      - name: Upload plain
+        uses: mschmitt/rsync-with-ssh-agent@HEAD
+        with:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_PASSPHRASE: ${{ secrets.SSH_PASSPHRASE }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          RSYNC_REMOTE_PATH: '${{ secrets.RSYNC_REMOTE_PATH }}/plain'
+          RSYNC_LOCAL_PATH: plain
+          RSYNC_OPTIONS: '--dry-run'
