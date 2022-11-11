@@ -1,3 +1,9 @@
+name: rsync-with-ssh-agent
+author: Martin Schmitt
+description: Upload via rsync with SSH and passphrase
+branding:
+  color: green
+  icon: folder
 inputs:
   SSH_KEY:
     description: 'SSH identity'
