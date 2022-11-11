@@ -36,7 +36,7 @@ runs:
       echo '${{ inputs.SSH_KEY }}' > ~/.ssh/id
     shell: sh
   - name: Start agent
-    run: ssh-agent -a ~/.ssh/agent.socket > $GITHUB_ENV
+    run: ssh-agent -a ~/.ssh/agent.socket >> $GITHUB_ENV
     shell: sh
   - name: Create ssh config
     run: |
