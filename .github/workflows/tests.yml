@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  upload_files:
+  test:
     runs-on: ubuntu-22.04
     steps:
       - name: Generate test file (plain)
@@ -26,7 +26,7 @@ jobs:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           RSYNC_REMOTE_PATH: ${{ secrets.RSYNC_REMOTE_PATH }}/plain
           RSYNC_LOCAL_PATH: plain
-          RSYNC_OPTIONS: '--dry-run'
+          RSYNC_OPTIONS: ''
       - name: Upload space
         uses: mschmitt/rsync-with-ssh-agent@HEAD
         with:
@@ -36,7 +36,7 @@ jobs:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           RSYNC_REMOTE_PATH: ${{ secrets.RSYNC_REMOTE_PATH }}/spa\ ce
           RSYNC_LOCAL_PATH: 'spa ce'
-          RSYNC_OPTIONS: '--dry-run'
+          RSYNC_OPTIONS: ''
       - name: Upload umlaut
         uses: mschmitt/rsync-with-ssh-agent@HEAD
         with:
@@ -46,4 +46,4 @@ jobs:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           RSYNC_REMOTE_PATH: ${{ secrets.RSYNC_REMOTE_PATH }}/umlaüt
           RSYNC_LOCAL_PATH: 'umlaüt'
-          RSYNC_OPTIONS: '--dry-run'
+          RSYNC_OPTIONS: ''
