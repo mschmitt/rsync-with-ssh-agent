@@ -14,8 +14,7 @@ inputs:
   SSH_PORT:
     description: 'SSH port on remote host (default 22)'
     required: false
-    default: 22
-  
+    default: 22  
   RSYNC_OPTIONS:
     description: 'additional rsync options'
     required: false
