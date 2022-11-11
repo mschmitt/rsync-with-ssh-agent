@@ -5,16 +5,16 @@
 ## Synopsis
 
 ```
-      - uses: mschmitt/rsync-with-ssh-agent@v1
-        with: 
-            SSH_KEY: ${{ secrets.SSH_KEY }}
-            SSH_PASSPHRASE: ${{ secrets.SSH_PASSPHRASE }}
-            SSH_USER: ${{ secrets.SSH_USER }}
-            SSH_HOST: ${{ secrets.SSH_HOST }}
-            SSH_PORT: ${{ secrets.SSH_PORT }}
-            RSYNC_LOCAL_PATH: .
-            RSYNC_REMOTE_PATH: .
-            RSYNC_OPTIONS: '--dry-run --include=.htaccess'
+- uses: mschmitt/rsync-with-ssh-agent@v1
+  with: 
+      SSH_KEY: ${{ secrets.SSH_KEY }}
+      SSH_PASSPHRASE: ${{ secrets.SSH_PASSPHRASE }}
+      SSH_USER: ${{ secrets.SSH_USER }}
+      SSH_HOST: ${{ secrets.SSH_HOST }}
+      SSH_PORT: ${{ secrets.SSH_PORT }}
+      RSYNC_LOCAL_PATH: .
+      RSYNC_REMOTE_PATH: .
+      RSYNC_OPTIONS: '--dry-run --include=.htaccess'
 ```
 
 ## Inputs
@@ -32,10 +32,13 @@
 
 ## Notes
 
-* Dot files are excluded from uploads.
+* Dot files are excluded from uploads and may be re-included as shown above.
 * Spaces in `RSYNC_REMOTE_PATH` *must* be backslash-escaped. Better avoid them altogether. (See `man rsync`: _ADVANCED USAGE_)
+* `RSYNC_LOCAL_PATH` ending in a slash tranfers the directory contents, no slash transfers the directory itself. (See `man rsync`: _USAGE_)
 * If `--dry-run` is removed from `RSYNC_OPTIONS`, `--delete` is implied, which may (and will) *lead to data loss on the receiving end*. 
 * Carefully check job output before removing the `--dry-run` option.
+* SSH with password instead of key is not supported and never will be.
+* Untested with empty passphrase.
 
 ## Personal note
 
