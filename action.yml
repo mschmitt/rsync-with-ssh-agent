@@ -55,23 +55,23 @@ runs:
     shell: sh
   - name: Add identity
     run: |
-      source ~/.ssh/agent.env
+      . ~/.ssh/agent.env
       echo "${SSH_PASSPHRASE}" | ssh-add ~/.ssh/id
     shell: sh
   - name: List identities
     run:  |
-      source ~/.ssh/agent.env
+      . ~/.ssh/agent.env
       ssh-add -l
     shell: sh
   - name: Transfer files
     run: |
-      source ~/.ssh/agent.env
+      . ~/.ssh/agent.env
       rsync --exclude '.*' --recursive --delete-excluded ${RSYNC_OPTIONS} --verbose ${RSYNC_LOCAL_PATH} 'remote:${RSYNC_REMOTE_PATH}'
     shell: sh
   - name: Kill agent and clean up
     if: success() || failure()
     run: |
-      source ~/.ssh/agent.env
+      . ~/.ssh/agent.env
       ssh-agent -k
       rm ~/.ssh/id
     shell: sh
