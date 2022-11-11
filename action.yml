@@ -29,6 +29,15 @@ inputs:
     default: '.'
 runs:
   using: "composite"
+  env:
+    SSH_KEY: ${{ inputs.SSH_KEY }}
+    SSH_PASSPHRASE: ${{ inputs.SSH_PASSPHRASE }}
+    SSH_USER: ${{ inputs.SSH_USER }}
+    SSH_HOST: ${{ inputs.SSH_HOST }}
+    SSH_PORT: ${{ inputs.SSH_PORT }}
+    RSYNC_REMOTE_PATH: ${{ inputs.RSYNC_REMOTE_PATH }}
+    RSYNC_LOCAL_PATH: ${{ inputs.RSYNC_LOCAL_PATH }}
+    RSYNC_OPTIONS: ${{ inputs.RSYNC_OPTIONS }}
   steps:
   - name: Save SSH id to file
     run: |
