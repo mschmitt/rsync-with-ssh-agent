@@ -27,3 +27,23 @@ jobs:
           RSYNC_REMOTE_PATH: '${{ secrets.RSYNC_REMOTE_PATH }}/plain'
           RSYNC_LOCAL_PATH: plain
           RSYNC_OPTIONS: '--dry-run'
+      - name: Upload space
+        uses: mschmitt/rsync-with-ssh-agent@HEAD
+        with:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_PASSPHRASE: ${{ secrets.SSH_PASSPHRASE }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          RSYNC_REMOTE_PATH: '${{ secrets.RSYNC_REMOTE_PATH }}/spa ce'
+          RSYNC_LOCAL_PATH: 'spa ce'
+          RSYNC_OPTIONS: '--dry-run'
+      - name: Upload umlaut
+        uses: mschmitt/rsync-with-ssh-agent@HEAD
+        with:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_PASSPHRASE: ${{ secrets.SSH_PASSPHRASE }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          RSYNC_REMOTE_PATH: '${{ secrets.RSYNC_REMOTE_PATH }}/umlaüt'
+          RSYNC_LOCAL_PATH: 'umlaüt'
+          RSYNC_OPTIONS: '--dry-run'
