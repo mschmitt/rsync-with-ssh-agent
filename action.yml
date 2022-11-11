@@ -29,20 +29,11 @@ inputs:
     default: '.'
 runs:
   using: "composite"
-  env:
-    SSH_KEY: ${{ inputs.SSH_KEY }}
-    SSH_PASSPHRASE: ${{ inputs.SSH_PASSPHRASE }}
-    SSH_USER: ${{ inputs.SSH_USER }}
-    SSH_HOST: ${{ inputs.SSH_HOST }}
-    SSH_PORT: ${{ inputs.SSH_PORT }}
-    RSYNC_REMOTE_PATH: ${{ inputs.RSYNC_REMOTE_PATH }}
-    RSYNC_LOCAL_PATH: ${{ inputs.RSYNC_LOCAL_PATH }}
-    RSYNC_OPTIONS: ${{ inputs.RSYNC_OPTIONS }}
   steps:
   - name: Save SSH id to file
     run: |
       install -D -m 600 /dev/null ~/.ssh/id
-      echo "${SSH_KEY}" > ~/.ssh/id
+      echo '${{ inputs.SSH_KEY }}' > ~/.ssh/id
     shell: sh
   - name: Start agent
     run: ssh-agent -a ~/.ssh/agent.socket > ~/.ssh/agent.env
@@ -53,10 +44,10 @@ runs:
       StrictHostKeyChecking accept-new
       IdentityFile ~/.ssh/id
       IdentitiesOnly yes
-      User ${SSH_USER}
+      User ${{ inputs.SSH_USER }}
       Host remote
-      Hostname ${SSH_HOST}
-      Port ${SSH_PORT}
+      Hostname ${{ inputs.SSH_HOST }}
+      Port ${{ inputs.SSH_PORT }}
       Here
     shell: sh
   - name: Debug config
@@ -65,7 +56,7 @@ runs:
   - name: Add identity
     run: |
       . ~/.ssh/agent.env
-      echo "${SSH_PASSPHRASE}" | ssh-add ~/.ssh/id
+      echo '${{ inputs.SSH_PASSPHRASE }}' | ssh-add ~/.ssh/id
     shell: sh
   - name: List identities
     run:  |
@@ -75,7 +66,7 @@ runs:
   - name: Transfer files
     run: |
       . ~/.ssh/agent.env
-      rsync --exclude '.*' --recursive --delete-excluded ${RSYNC_OPTIONS} --verbose ${RSYNC_LOCAL_PATH} 'remote:${RSYNC_REMOTE_PATH}'
+      rsync --exclude '.*' --recursive --delete-excluded ${{ inputs.RSYNC_OPTIONS }} --verbose '${{ inputs.RSYNC_LOCAL_PATH }}' 'remote:${{ inputs.RSYNC_REMOTE_PATH }}'
     shell: sh
   - name: Kill agent and clean up
     if: success() || failure()
