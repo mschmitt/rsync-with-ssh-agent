@@ -15,7 +15,6 @@
             RSYNC_OPTIONS: '--dry-run --include=.htaccess'
 ```
 
-
 ## Inputs
 
 * Mandatory
@@ -34,3 +33,13 @@
 * All local dot files are excluded from uploads. 
 * If `--dry-run` is removed from `RSYNC_OPTIONS`, `--delete` is implied, which may (and will) lead to data loss on the receiving end. 
 * Check Job output before removing the `--dry-run` option by setting `RSYNC_OPTIONS` to an empty string.
+
+## Personal note
+
+I use per-repository SSH keys and configure the receiving rsync in _~/.ssh/authorized_keys_ as follows:
+
+```
+restrict,command="rrsync /foo/deploy" ssh-ed25519 AAAAC3...
+```
+
+`rrsync` (_restricted rsync_) is part of the `rsync` package.
