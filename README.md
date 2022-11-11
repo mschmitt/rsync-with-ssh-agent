@@ -3,7 +3,7 @@
 ## Synopsis
 
 ```
-      - uses: mschmitt/rsync-with-ssh-agent@HEAD
+      - uses: mschmitt/rsync-with-ssh-agent@v1
         with: 
             SSH_KEY: ${{ secrets.SSH_KEY }}
             SSH_PASSPHRASE: ${{ secrets.SSH_PASSPHRASE }}
