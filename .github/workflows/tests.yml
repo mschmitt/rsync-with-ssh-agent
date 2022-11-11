@@ -47,3 +47,9 @@ jobs:
           RSYNC_REMOTE_PATH: ${{ secrets.RSYNC_REMOTE_PATH }}/umlaüt
           RSYNC_LOCAL_PATH: 'umlaüt'
           RSYNC_OPTIONS: ''
+      - name: Diff back (plain)
+        run: diff 'plain/test.txt' <(curl https://${{ secrets.SSH_HOST }}/testarea/plain/test.txt)
+      - name: Diff back (space)
+        run: diff 'spa ce/test.txt' <(curl https://${{ secrets.SSH_HOST }}/testarea/spa%20ce/test.txt)
+      - name: Diff back (umlaut)
+        run: diff 'umlaüt/test.txt' <(curl https://${{ secrets.SSH_HOST }}/testarea/umla%C3%BCt/test.txt)
