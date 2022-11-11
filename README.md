@@ -36,7 +36,7 @@
 
 ## Personal note
 
-I use per-repository SSH keys and configure the receiving rsync in _~/.ssh/authorized_keys_ as follows:
+The author uses per-repository SSH keys and configures the receiving rsync in _~/.ssh/authorized_keys_ as follows:
 
 ```
 restrict,command="rrsync /foo/deploy" ssh-ed25519 AAAAC3...
