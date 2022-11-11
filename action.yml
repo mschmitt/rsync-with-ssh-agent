@@ -1,21 +1,33 @@
 inputs:
-  RSYNC_LOCAL_PATH:
-    description: 'rsync local source path'
+  SSH_KEY:
+    description: 'SSH identity'
+    required: true
+  SSH_PASSPHRASE:
+    description: 'Passphrase for SSH identity'
+    required: true
+  SSH_USER:
+    description: 'SSH remote user'
+    required: true
+  SSH_HOST:
+    description: 'SSH remote host'
+    required: true
+  SSH_PORT:
+    description: 'SSH port on remote host (default 22)'
     required: false
-    default: '.'
+    default: 22
+  
   RSYNC_OPTIONS:
     description: 'additional rsync options'
     required: false
     default: '--dry-run'
-#env:
-#  SSH_KEY: ${{ secrets.SSH_KEY }}
-#  SSH_PASSPHRASE: ${{ secrets.SSH_PASSPHRASE }}
-#  SSH_USER: ${{ secrets.SSH_USER }}
-#  SSH_HOST: ${{ secrets.SSH_HOST }}
-#  SSH_PORT: ${{ secrets.SSH_PORT }}
-#  RSYNC_REMOTE_PATH: ${{ secrets.RSYNC_REMOTE_PATH }}
-#  RSYNC_LOCAL_PATH: ${{ inputs.RSYNC_LOCAL_PATH }}
-#  RSYNC_OPTIONS: ${{ inputs.RSYNC_OPTIONS }}
+  RSYNC_LOCAL_PATH:
+    description: 'rsync local source path'
+    required: false
+    default: '.'
+  RSYNC_REMOTE_PATH:
+    description: 'rsync remote destination path (default .)'
+    required: false
+    default: '.'
 runs:
   using: "composite"
   steps:
@@ -34,7 +46,7 @@ runs:
       User ${SSH_USER}
       Host remote
       Hostname ${SSH_HOST}
-      Port ${SSH_PORT:-22}
+      Port ${SSH_PORT}
       Here
     shell: sh
   - name: Debug config
@@ -53,7 +65,7 @@ runs:
   - name: Transfer files
     run: |
       source ~/.ssh/agent.env
-      rsync --exclude '.*' --recursive --delete-excluded ${RSYNC_OPTIONS} --verbose ${RSYNC_LOCAL_PATH} 'remote:${RSYNC_REMOTE_PATH:-.}'
+      rsync --exclude '.*' --recursive --delete-excluded ${RSYNC_OPTIONS} --verbose ${RSYNC_LOCAL_PATH} 'remote:${RSYNC_REMOTE_PATH}'
     shell: sh
   - name: Kill agent and clean up
     if: success() || failure()
