@@ -7,15 +7,15 @@ inputs:
     description: 'additional rsync options'
     required: false
     default: '--dry-run'
-env:
-  SSH_KEY: ${{ secrets.SSH_KEY }}
-  SSH_PASSPHRASE: ${{ secrets.SSH_PASSPHRASE }}
-  SSH_USER: ${{ secrets.SSH_USER }}
-  SSH_HOST: ${{ secrets.SSH_HOST }}
-  SSH_PORT: ${{ secrets.SSH_PORT }}
-  RSYNC_REMOTE_PATH: ${{ secrets.RSYNC_REMOTE_PATH }}
-  RSYNC_LOCAL_PATH: ${{ inputs.RSYNC_LOCAL_PATH }}
-  RSYNC_OPTIONS: ${{ inputs.RSYNC_OPTIONS }}
+#env:
+#  SSH_KEY: ${{ secrets.SSH_KEY }}
+#  SSH_PASSPHRASE: ${{ secrets.SSH_PASSPHRASE }}
+#  SSH_USER: ${{ secrets.SSH_USER }}
+#  SSH_HOST: ${{ secrets.SSH_HOST }}
+#  SSH_PORT: ${{ secrets.SSH_PORT }}
+#  RSYNC_REMOTE_PATH: ${{ secrets.RSYNC_REMOTE_PATH }}
+#  RSYNC_LOCAL_PATH: ${{ inputs.RSYNC_LOCAL_PATH }}
+#  RSYNC_OPTIONS: ${{ inputs.RSYNC_OPTIONS }}
 runs:
   using: "composite"
   steps:
