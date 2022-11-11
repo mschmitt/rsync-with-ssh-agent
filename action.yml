@@ -27,14 +27,12 @@ inputs:
     description: 'rsync remote destination path (default .)'
     required: false
     default: '.'
-defaults:
-  runs:
-    shell: sh
 runs:
   using: "composite"
   steps:
   - name: Save SSH id to file
     run: install -D -m 600 /dev/null ~/.ssh/id && echo '${{ inputs.SSH_KEY }}' > ~/.ssh/id
+    shell: sh
   - name: Start agent
     run: ssh-agent -a ~/.ssh/agent.socket > ~/.ssh/agent.env
     shell: sh
