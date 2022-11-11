@@ -54,9 +54,7 @@ runs:
     run: cat ~/.ssh/config
     shell: sh
   - name: Add identity
-    run: echo '${{ inputs.SSH_PASSPHRASE }}' | ssh-add ~/.ssh/id
-    env:
-      SSH_AUTH_SOCK: "~/.ssh/agent.socket"
+    run: . ~/.ssh/agent.env; echo '${{ inputs.SSH_PASSPHRASE }}' | ssh-add ~/.ssh/id
     shell: sh
   - name: List identities
     run:  |
