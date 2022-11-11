@@ -31,6 +31,7 @@
 ## Notes
 
 * Dot files are excluded from uploads.
+* Spaces in `RSYNC_REMOTE_PATH` *must* be backslash-escaped. Better avoid them altogether. (See `man rsync`: _ADVANCED USAGE_)
 * If `--dry-run` is removed from `RSYNC_OPTIONS`, `--delete` is implied, which may (and will) *lead to data loss on the receiving end*. 
 * Carefully check job output before removing the `--dry-run` option.
 
@@ -47,6 +48,7 @@ restrict,command="rrsync /foo/deploy" ssh-ed25519 AAAAC3...
 ## See it in use
 
 * https://github.com/mschmitt/littlelink/tree/persona/informal/.github/workflows
+* https://github.com/mschmitt/rsync-with-ssh-agent/blob/main/.github/workflows
 
 ## License
 
