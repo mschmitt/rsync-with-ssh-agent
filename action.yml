@@ -31,10 +31,7 @@ runs:
   using: "composite"
   steps:
   - name: Save SSH id to file
-    run: |
-      install -D -m 600 /dev/null ~/.ssh/id
-      echo '${{ inputs.SSH_KEY }}' > ~/.ssh/id
-    shell: sh
+    run: install -D -m 600 /dev/null ~/.ssh/id && echo '${{ inputs.SSH_KEY }}' > ~/.ssh/id
   - name: Start agent
     run: ssh-agent -a ~/.ssh/agent.socket > ~/.ssh/agent.env
     shell: sh
