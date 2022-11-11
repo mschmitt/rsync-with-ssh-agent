@@ -27,5 +27,5 @@ Local dot files are always excluded from uploads. If --dry-run is removed from R
             SSH_PORT: ${{ secrets.SSH_PORT }}
             RSYNC_REMOTE_PATH: .
             RSYNC_LOCAL_PATH: .
-            RSYNC_OPTIONS: ''
+            RSYNC_OPTIONS: '--dry-run'
 ```
