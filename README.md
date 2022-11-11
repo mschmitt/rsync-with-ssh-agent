@@ -1,3 +1,5 @@
+**Shared actions must be public, but this is a research project under development. Don't waste your precious time.**
+
 # rsync-with-ssh-agent
 
 All remote-related information is considered secret and needs to be configured in repository secrets:
