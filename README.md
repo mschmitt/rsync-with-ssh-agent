@@ -44,6 +44,10 @@ restrict,command="rrsync /foo/deploy" ssh-ed25519 AAAAC3...
 
 `rrsync` (_restricted rsync_) is part of the `rsync` package.
 
+## See it in use
+
+* https://github.com/mschmitt/littlelink/tree/persona/informal/.github/workflows
+
 ## License
 
 ```
