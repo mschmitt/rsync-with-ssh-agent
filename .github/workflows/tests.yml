@@ -24,8 +24,8 @@ jobs:
           SSH_PASSPHRASE: ${{ secrets.SSH_PASSPHRASE }}
           SSH_USER: ${{ secrets.SSH_USER }}
           SSH_HOST: ${{ secrets.SSH_HOST }}
-          RSYNC_REMOTE_PATH: ${{ secrets.RSYNC_REMOTE_PATH }}/plain
-          RSYNC_LOCAL_PATH: plain
+          RSYNC_REMOTE_PATH: 'plain'
+          RSYNC_LOCAL_PATH: 'plain'
           RSYNC_OPTIONS: ''
       - name: Upload space
         uses: mschmitt/rsync-with-ssh-agent@HEAD
@@ -34,7 +34,7 @@ jobs:
           SSH_PASSPHRASE: ${{ secrets.SSH_PASSPHRASE }}
           SSH_USER: ${{ secrets.SSH_USER }}
           SSH_HOST: ${{ secrets.SSH_HOST }}
-          RSYNC_REMOTE_PATH: ${{ secrets.RSYNC_REMOTE_PATH }}/spa\ ce
+          RSYNC_REMOTE_PATH: 'spa\ ce'
           RSYNC_LOCAL_PATH: 'spa ce'
           RSYNC_OPTIONS: ''
       - name: Upload umlaut
@@ -44,7 +44,7 @@ jobs:
           SSH_PASSPHRASE: ${{ secrets.SSH_PASSPHRASE }}
           SSH_USER: ${{ secrets.SSH_USER }}
           SSH_HOST: ${{ secrets.SSH_HOST }}
-          RSYNC_REMOTE_PATH: ${{ secrets.RSYNC_REMOTE_PATH }}/umlaüt
+          RSYNC_REMOTE_PATH: 'umlaüt'
           RSYNC_LOCAL_PATH: 'umlaüt'
           RSYNC_OPTIONS: ''
       - name: Diff back (plain)
