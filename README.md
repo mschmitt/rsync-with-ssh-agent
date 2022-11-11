@@ -30,16 +30,42 @@
 
 ## Notes
 
-* All local dot files are excluded from uploads. 
-* If `--dry-run` is removed from `RSYNC_OPTIONS`, `--delete` is implied, which may (and will) lead to data loss on the receiving end. 
-* Check Job output before removing the `--dry-run` option by setting `RSYNC_OPTIONS` to an empty string.
+* Dot files are excluded from uploads.
+* If `--dry-run` is removed from `RSYNC_OPTIONS`, `--delete` is implied, which may (and will) *lead to data loss on the receiving end*. 
+* Carefully check job output before removing the `--dry-run` option.
 
 ## Personal note
 
-The author uses per-repository SSH keys and configures the receiving rsync in _~/.ssh/authorized_keys_ as follows:
+The author uses per-repository SSH keys and configures the receiving _rsync_ in _~/.ssh/authorized_keys_ as follows:
 
 ```
 restrict,command="rrsync /foo/deploy" ssh-ed25519 AAAAC3...
 ```
 
 `rrsync` (_restricted rsync_) is part of the `rsync` package.
+
+## License
+
+```
+MIT License
+
+Copyright (c) 2022 Martin Schmitt
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
