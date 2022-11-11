@@ -51,7 +51,7 @@ runs:
     shell: sh
   - run: . ~/.ssh/agent.env; ssh-add -l
     shell: sh
-  - run: . ~/.ssh/agent.env; rsync --exclude '.*' --recursive --delete-excluded ${{ inputs.RSYNC_OPTIONS }} --verbose '${{ inputs.RSYNC_LOCAL_PATH }}' 'remote:${{ inputs.RSYNC_REMOTE_PATH }}'
+  - run: . ~/.ssh/agent.env; rsync ${{ inputs.RSYNC_OPTIONS }} --exclude '.*' --recursive --delete-excluded --verbose '${{ inputs.RSYNC_LOCAL_PATH }}' 'remote:${{ inputs.RSYNC_REMOTE_PATH }}'
     shell: sh
   - run: . ~/.ssh/agent.env; ssh-agent -k; rm ~/.ssh/id
     if: success() || failure()
