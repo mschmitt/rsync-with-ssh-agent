@@ -14,7 +14,10 @@ env:
   SSH_HOST: ${{ secrets.SSH_HOST }}
   SSH_PORT: ${{ secrets.SSH_PORT }}
   RSYNC_REMOTE_PATH: ${{ secrets.RSYNC_REMOTE_PATH }}
+  RSYNC_LOCAL_PATH: ${{ inputs.RSYNC_LOCAL_PATH }}
+  RSYNC_OPTIONS: ${{ inputs.RSYNC_OPTIONS }}
 runs:
+  using: "composite"
   steps:
   - name: Save SSH id to file
     run: install -D -m 600 <(echo "${SSH_KEY}") ~/.ssh/id
@@ -50,7 +53,7 @@ runs:
   - name: Transfer files
     run: |
       source ~/.ssh/agent.env
-      rsync --exclude '.*' --recursive --delete-excluded ${{ inputs.RSYNC_OPTIONS }} --verbose ${{ inputs.RSYNC_LOCAL_PATH }} 'remote:${RSYNC_REMOTE_PATH:-.}'
+      rsync --exclude '.*' --recursive --delete-excluded ${RSYNC_OPTIONS} --verbose ${RSYNC_LOCAL_PATH} 'remote:${RSYNC_REMOTE_PATH:-.}'
     shell: sh
   - name: Kill agent and clean up
     if: success() || failure()
