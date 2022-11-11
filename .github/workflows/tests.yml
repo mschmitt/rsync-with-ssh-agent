@@ -1,4 +1,4 @@
-name: rsync with SSH agent
+name: rsync tests
 
 on:
   push:
@@ -24,7 +24,7 @@ jobs:
           SSH_PASSPHRASE: ${{ secrets.SSH_PASSPHRASE }}
           SSH_USER: ${{ secrets.SSH_USER }}
           SSH_HOST: ${{ secrets.SSH_HOST }}
-          RSYNC_REMOTE_PATH: '${{ secrets.RSYNC_REMOTE_PATH }}/plain'
+          RSYNC_REMOTE_PATH: ${{ secrets.RSYNC_REMOTE_PATH }}/plain
           RSYNC_LOCAL_PATH: plain
           RSYNC_OPTIONS: '--dry-run'
       - name: Upload space
@@ -34,7 +34,7 @@ jobs:
           SSH_PASSPHRASE: ${{ secrets.SSH_PASSPHRASE }}
           SSH_USER: ${{ secrets.SSH_USER }}
           SSH_HOST: ${{ secrets.SSH_HOST }}
-          RSYNC_REMOTE_PATH: '${{ secrets.RSYNC_REMOTE_PATH }}/spa ce'
+          RSYNC_REMOTE_PATH: ${{ secrets.RSYNC_REMOTE_PATH }}/spa\ ce
           RSYNC_LOCAL_PATH: 'spa ce'
           RSYNC_OPTIONS: '--dry-run'
       - name: Upload umlaut
@@ -44,6 +44,6 @@ jobs:
           SSH_PASSPHRASE: ${{ secrets.SSH_PASSPHRASE }}
           SSH_USER: ${{ secrets.SSH_USER }}
           SSH_HOST: ${{ secrets.SSH_HOST }}
-          RSYNC_REMOTE_PATH: '${{ secrets.RSYNC_REMOTE_PATH }}/umlaüt'
+          RSYNC_REMOTE_PATH: ${{ secrets.RSYNC_REMOTE_PATH }}/umlaüt
           RSYNC_LOCAL_PATH: 'umlaüt'
           RSYNC_OPTIONS: '--dry-run'
