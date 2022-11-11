@@ -56,7 +56,7 @@ runs:
   - name: Add identity
     run: echo '${{ inputs.SSH_PASSPHRASE }}' | ssh-add ~/.ssh/id
     env:
-      SSH_AUTH_SOCK: ~/.ssh/agent.socket
+      SSH_AUTH_SOCK: "~/.ssh/agent.socket"
     shell: sh
   - name: List identities
     run:  |
