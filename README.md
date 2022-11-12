@@ -48,7 +48,7 @@ Along with restricted rsync on the receving end (`rrsync`, see _Application Note
 * Dot files are excluded from uploads and may be re-included as shown above.
 * Spaces in `RSYNC_REMOTE_PATH` *must* be backslash-escaped. Better avoid them altogether. (See `man rsync`: _ADVANCED USAGE_)
 * `RSYNC_LOCAL_PATH` ending in a slash tranfers the directory contents, no slash transfers the directory itself. (See `man rsync`: _USAGE_)
-* Implicit rsync options in the script are:
+* Implicit rsync options in the action are:
   * `--exclude '.*'`
   * `--recursive`
   * `--delete-excluded` (which itself implies `--delete`)
