@@ -1,6 +1,6 @@
 name: rsync-with-ssh-agent
 author: Martin Schmitt
-description: Upload via rsync with SSH and passphrase
+description: Sync files by rsync with SSH key, agent and passphrase
 branding:
   color: green
   icon: folder
@@ -20,7 +20,7 @@ inputs:
   SSH_PORT:
     description: 'SSH port on remote host (default 22)'
     required: false
-    default: 22  
+    default: '22'
   RSYNC_OPTIONS:
     description: 'additional rsync options'
     required: false

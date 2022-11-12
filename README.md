@@ -2,6 +2,10 @@
 
  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![rsync tests](https://github.com/mschmitt/rsync-with-ssh-agent/actions/workflows/tests.yml/badge.svg)](https://github.com/mschmitt/rsync-with-ssh-agent/actions/workflows/tests.yml)
 
+## Name
+
+rsync-with-ssh-agent - Sync files by rsync with SSH key, agent and passphrase
+
 ## Synopsis
 
 ```
@@ -16,6 +20,14 @@
       RSYNC_REMOTE_PATH: .
       RSYNC_OPTIONS: '--dry-run --include=.htaccess'
 ```
+
+## Description
+
+An rsync uploader that is believed to offer a reasonable amount of security, due to its support for an SSH passphrase.
+
+Along with restricted rsync on the receving end (`rrsync`, see _Application Note_ below), it should be able to securely handle most upload scenarios.
+
+**See notes on remote deletion below.**
 
 ## Inputs
 
@@ -32,15 +44,44 @@
 
 ## Notes
 
+### Rsync options and parameters
 * Dot files are excluded from uploads and may be re-included as shown above.
 * Spaces in `RSYNC_REMOTE_PATH` *must* be backslash-escaped. Better avoid them altogether. (See `man rsync`: _ADVANCED USAGE_)
 * `RSYNC_LOCAL_PATH` ending in a slash tranfers the directory contents, no slash transfers the directory itself. (See `man rsync`: _USAGE_)
-* If `--dry-run` is removed from `RSYNC_OPTIONS`, `--delete` is implied, which may (and will) *lead to data loss on the receiving end*. 
-* Carefully check job output before removing the `--dry-run` option.
+* Implicit rsync options in the script are:
+  * `--exclude '.*'`
+  * `--recursive`
+  * `--delete-excluded` (which itself implies `--delete`)
+  * `--verbose`
+* `RSYNC_OPTIONS` are inserted before the implicit options.
+* A future minor update may introduce additional rsync options to be inserted after the implicit options.
+
+### Authentication
+
 * SSH with password instead of key is not supported and never will be.
 * Untested with empty passphrase.
 
-## Personal note
+### Remote deletion in API v1 (current)
+
+* The rsync invocation is configured to delete files from the destination that do not exist on the source. **This will easily lead to data loss on the receiving end.** 
+
+* The default --dry-run in `RSYNC_OPTIONS` will prevent accidental deletion on early integration attempts.
+
+* If `--dry-run` is removed from `RSYNC_OPTIONS`, `--delete` is implied. 
+
+* Carefully check job output for unwanted _delete_ output before setting `RSYNC_OPTIONS` without the `--dry-run` option.
+
+* Risk of catastrophic data loss is greatly reduced if used with `rrsync` on the receiving end (see _Application note_ below).
+
+* Remote deletion defaults are subject to change in a future API v2.
+
+### Compatibility
+
+* Should be sufficiently cross-platform due to removal of `bash` specific features.
+
+* May require additional installation of `ssh` and `rsync` in the environment. This is *not* the case on Gitlab's _Ubuntu_ runners.
+
+## Application note
 
 The author uses per-repository SSH keys and configures the receiving _rsync_ in _~/.ssh/authorized_keys_ as follows:
 
