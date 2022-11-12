@@ -65,7 +65,7 @@ Along with restricted rsync on the receving end (`rrsync`, see _Application Note
 
 * The rsync invocation is configured to delete files from the destination that do not exist on the source. **This will easily lead to data loss on the receiving end.** 
 
-* The default --dry-run in `RSYNC_OPTIONS` will prevent accidental deletion on early integration attempts.
+* The default `--dry-run` in `RSYNC_OPTIONS` will prevent accidental deletion on early integration attempts.
 
 * If `--dry-run` is removed from `RSYNC_OPTIONS`, `--delete` is implied. 
 
