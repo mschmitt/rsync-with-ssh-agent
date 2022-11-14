@@ -35,7 +35,7 @@ jobs:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           RSYNC_REMOTE_PATH: 'spa\ ce'
           RSYNC_LOCAL_PATH: 'spa ce'
-          RSYNC_OPTIONS: ''
+          RSYNC_OPTIONS: '--exclude ".*" --recursive --delete-excluded --verbose'
       - name: Upload umlaut
         uses: mschmitt/rsync-with-ssh-agent@HEAD
         with:
@@ -45,7 +45,7 @@ jobs:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           RSYNC_REMOTE_PATH: 'umlaüt'
           RSYNC_LOCAL_PATH: 'umlaüt'
-          RSYNC_OPTIONS: ''
+          RSYNC_OPTIONS: '--exclude ".*" --recursive --delete-excluded --verbose'
       - name: Diff back (plain)
         run: diff 'plain/test.txt' <(curl https://${{ secrets.SSH_HOST }}/testarea/plain/plain/test.txt)
       - name: Diff back (space)
