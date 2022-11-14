@@ -22,9 +22,9 @@ inputs:
     required: false
     default: '22'
   RSYNC_OPTIONS:
-    description: 'additional rsync options'
+    description: 'rsync options'
     required: false
-    default: '--dry-run'
+    default: ''
   RSYNC_LOCAL_PATH:
     description: 'rsync local source path'
     required: false
@@ -57,7 +57,7 @@ runs:
     shell: sh
   - run: . ~/.ssh/agent.env; ssh-add -l
     shell: sh
-  - run: . ~/.ssh/agent.env; rsync ${{ inputs.RSYNC_OPTIONS }} --exclude '.*' --recursive --delete-excluded --verbose '${{ inputs.RSYNC_LOCAL_PATH }}' 'remote:${{ inputs.RSYNC_REMOTE_PATH }}'
+  - run: . ~/.ssh/agent.env; rsync ${{ inputs.RSYNC_OPTIONS }} '${{ inputs.RSYNC_LOCAL_PATH }}' 'remote:${{ inputs.RSYNC_REMOTE_PATH }}'
     shell: sh
   - run: . ~/.ssh/agent.env; ssh-agent -k; rm ~/.ssh/id
     if: success() || failure()

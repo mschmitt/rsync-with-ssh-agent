@@ -8,8 +8,8 @@ rsync-with-ssh-agent - Sync files by rsync with SSH key, agent and passphrase
 
 ## Synopsis
 
-```
-- uses: mschmitt/rsync-with-ssh-agent@v1
+```yaml
+- uses: mschmitt/rsync-with-ssh-agent@v2
   with: 
       SSH_KEY: ${{ secrets.SSH_KEY }}
       SSH_PASSPHRASE: ${{ secrets.SSH_PASSPHRASE }}
@@ -18,68 +18,56 @@ rsync-with-ssh-agent - Sync files by rsync with SSH key, agent and passphrase
       SSH_PORT: ${{ secrets.SSH_PORT }}
       RSYNC_LOCAL_PATH: .
       RSYNC_REMOTE_PATH: .
-      RSYNC_OPTIONS: '--dry-run --include=.htaccess'
+      RSYNC_OPTIONS: '--include .htaccess --exclude ".*" --recursive --delete-excluded --verbose --dry-run' 
 ```
 
 ## Description
 
 An rsync uploader that is believed to offer a reasonable amount of security, due to its support for an SSH passphrase.
 
-Along with restricted rsync on the receving end (`rrsync`, see _Application Note_ below), it should be able to securely handle most upload scenarios.
-
-**See notes on remote deletion below.**
+Together with restricted rsync on the receving end (`rrsync`, see _Application Note_ below), it should be able to securely handle most upload scenarios.
 
 ## Inputs
 
 * Mandatory
-    * SSH_HOST
-    * SSH_USER
-    * SSH_KEY
-    * SSH_PASSPHRASE
+    * `SSH_HOST`
+    * `SSH_USER`
+    * `SSH_KEY`
+    * `SSH_PASSPHRASE`
 * Optional
-    * SSH_PORT (default: 22)
-    * RSYNC_LOCAL_PATH (default: .)
-    * RSYNC_REMOTE_PATH (default: .)
-    * RSYNC_OPTIONS (default: --dry-run)
+    * `SSH_PORT` (default: 22)
+    * `RSYNC_LOCAL_PATH` (default: .)
+    * `RSYNC_REMOTE_PATH` (default: .)
+    * `RSYNC_OPTIONS` (default: empty)
 
 ## Notes
 
 ### Rsync options and parameters
-* Dot files are excluded from uploads and may be re-included as shown above.
+* **v2** of the action **has dropped ALL** previously implied `rsync` options. Please construct them according to the `rsync` manual page and the provided examples.
+* `RSYNC_LOCAL_PATH` ending in a slash transfers the directory contents, no slash transfers the directory itself. (See `man rsync`: _USAGE_)
 * Spaces in `RSYNC_REMOTE_PATH` *must* be backslash-escaped. Better avoid them altogether. (See `man rsync`: _ADVANCED USAGE_)
-* `RSYNC_LOCAL_PATH` ending in a slash tranfers the directory contents, no slash transfers the directory itself. (See `man rsync`: _USAGE_)
-* Implicit rsync options in the action are:
-  * `--exclude '.*'`
-  * `--recursive`
-  * `--delete-excluded` (which itself implies `--delete`)
-  * `--verbose`
-* `RSYNC_OPTIONS` are inserted before the implicit options.
-* A future minor update may introduce additional rsync options to be inserted after the implicit options.
 
 ### Authentication
 
 * SSH with password instead of key is not supported and never will be.
 * Untested with empty passphrase.
 
-### Remote deletion in API v1 (current)
+### Remote deletion
 
-* The rsync invocation is configured to delete files from the destination that do not exist on the source. **This will easily lead to data loss on the receiving end.** 
+* The option `--delete-excluded`  (implying `--delete`) has been dropped from the `rsync` options in **v2** of the action, along with all other previously implied options.
+* In order to avoid data loss on the receiving end, the usual precautions apply: 
+  * **Test remote deletion** by also adding `--dry-run --verbose` in `RSYNC_OPTIONS` and observe its behaviour from the job's output.
 
-* The default `--dry-run` in `RSYNC_OPTIONS` will prevent accidental deletion on early integration attempts.
+  * **Carefully check job output for unwanted _delete_ output** before setting `RSYNC_OPTIONS` without the `--dry-run` option.
 
-* If `--dry-run` is removed from `RSYNC_OPTIONS`, `--delete` is implied. 
+  * **Risk of catastrophic data loss** is greatly reduced if used with `rrsync` on the receiving end (see _Application note_ below).
 
-* Carefully check job output for unwanted _delete_ output before setting `RSYNC_OPTIONS` without the `--dry-run` option.
-
-* Risk of catastrophic data loss is greatly reduced if used with `rrsync` on the receiving end (see _Application note_ below).
-
-* Remote deletion defaults are subject to change in a future API v2.
 
 ### Compatibility
 
 * Should be sufficiently cross-platform due to removal of `bash` specific features.
 
-* May require additional installation of `ssh` and `rsync` in the environment. This is *not* the case on Gitlab's _Ubuntu_ runners.
+* May require additional installation of `ssh` and `rsync` in the environment. This is *not* required on Gitlab's _Ubuntu_ runners.
 
 ## Application note
 
