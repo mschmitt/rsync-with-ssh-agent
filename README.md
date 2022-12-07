@@ -25,7 +25,7 @@ rsync-with-ssh-agent - Sync files by rsync with SSH key, agent and passphrase
 
 An rsync uploader that is believed to offer a reasonable amount of security, due to its support for an SSH passphrase.
 
-Together with restricted rsync on the receving end (`rrsync`, see _Application Note_ below), it should be able to securely handle most upload scenarios.
+Together with restricted rsync on the receving end (`rrsync`, see _Application Note_ in the wiki, link below), it should be able to securely handle most upload scenarios.
 
 ## Inputs
 
